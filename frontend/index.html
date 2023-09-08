@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Currency Exchange Rates</title>
+
+    <style>
+        /* Style for the body */
+        body {
+            background-color: #f0f0f0; /* Light gray background */
+            color: #333; /* Dark gray text color */
+            font-size: 24px;
+            text-align: center;
+            padding: 20px;
+        }
+
+        /* Style for the currency table */
+        table {
+            border-collapse: collapse;
+            width: 80%;
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: #fff; /* White table background */
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Light box shadow */
+        }
+
+        th, td {
+            border: 1px solid #ccc;
+            padding: 10px; /* Increased padding for better readability */
+            text-align: center;
+        }
+
+        th {
+            background-color: #0074cc; /* Navy blue header background */
+            color: #fff; /* White text color for headers */
+        }
+
+        /* Style for the page heading */
+        h1 {
+            background-color: #0074cc; /* Navy blue heading background */
+            color: #fff; /* White text color for heading */
+            padding: 10px;
+            margin-top: 0; /* Remove default margin */
+        }
+
+        /* Align currency names to the left */
+        td:nth-child(1) {
+            text-align: left;
+        }
+    </style>
+</head>
+<body>
+    <h1>Currency Exchange Rates</h1>
+
+    <!-- Currency table -->
+    <table>
+        <thead>
+            <tr>
+                <th>Currency</th>
+                <th>Abbreviation</th>
+                <th>Value in BGN</th>
+            </tr>
+        </thead>
+        <tbody id="currency-list">
+            <!-- Currency rates will be displayed here -->
+        </tbody>
+    </table>
+
+    <script>
+        const currencyList = document.getElementById('currency-list');
+
+        // Function to fetch currency data from the backend
+        async function fetchCurrencyData() {
+            try {
+                const response = await fetch('http://localhost:8000'); // Update the URL
+                const data = await response.json();
+
+                // Loop through the currency data and create table rows
+                data.currencies.forEach((currency) => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${currency.name}</td>
+                        <td>${currency.abbreviation}</td>
+                        <td>${currency.value_in_bgn}</td>
+                    `;
+                    currencyList.appendChild(row);
+                });
+            } catch (error) {
+                console.error(error);
+            }
+        }
+
+        // Call the fetchCurrencyData function when the page loads
+        window.onload = fetchCurrencyData;
+    </script>
+</body>
+</html>
+

@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Currency Exchange Rates</title>
+</head>
+<body>
+    <h1>Currency Exchange Rates</h1>
+    <ul id="currency-list">
+        <!-- Currency rates will be displayed here -->
+    </ul>
+
+    <script>
+        const currencyList = document.getElementById('currency-list');
+        
+        // Function to fetch currency data from the backend
+        async function fetchCurrencyData() {
+            try {
+                const response = await fetch('http://localhost:8000');
+                const data = await response.json();
+        
+                // Loop through the currency data and create list items
+                data.currencies.forEach((currency) => {
+                    const listItem = document.createElement('li');
+                    listItem.textContent = `${currency.name} (${currency.abbreviation}): ${currency.value_in_bgn}`;
+                    currencyList.appendChild(listItem);
+                });
+            } catch (error) {
+                console.error(error);
+            }
+         }
+        
+        // Call the fetchCurrencyData function when the page loads
+        window.onload = fetchCurrencyData;
+    </script>
+</body>
+</html>

@@ -1,0 +1,49 @@
+version: '3'
+
+services:
+
+  mariadb:
+    image: mariadb:latest
+    container_name: mariadb
+    env_file:
+      - .env
+    ports:
+      - "3306:3306"
+    volumes:
+      - mariadb-data:/var/lib/mysql
+      - ./init_db.sql:/docker-entrypoint-initdb.d/init_db.sql
+    networks:
+      - workshop-network
+    restart: always
+
+  backend:
+    build:
+      context: ./backend
+    container_name: backend
+    ports:
+      - "8000:80"
+    depends_on:
+      - mariadb
+    env_file:
+      - .env
+    networks:
+      - workshop-network
+    restart: always
+
+  frontend:
+    build:
+      context: ./frontend
+    container_name: frontend
+    ports:
+      - "8080:80"
+    depends_on:
+      - backend
+    networks:
+      - workshop-network
+    restart: always
+
+networks:
+  workshop-network:
+
+volumes:
+  mariadb-data:
