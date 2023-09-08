@@ -1,4 +1,4 @@
-version: '3'
+version: "3"
 
 services:
 
@@ -12,8 +12,6 @@ services:
     volumes:
       - mariadb-data:/var/lib/mysql
       - ./init_db.sql:/docker-entrypoint-initdb.d/init_db.sql
-    networks:
-      - workshop-network
     restart: always
 
   backend:
@@ -26,8 +24,6 @@ services:
       - mariadb
     env_file:
       - .env
-    networks:
-      - workshop-network
     restart: always
 
   frontend:
@@ -38,12 +34,7 @@ services:
       - "8080:80"
     depends_on:
       - backend
-    networks:
-      - workshop-network
     restart: always
-
-networks:
-  workshop-network:
 
 volumes:
   mariadb-data:
