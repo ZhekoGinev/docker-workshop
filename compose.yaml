@@ -3,7 +3,7 @@ version: "3"
 services:
 
   mariadb:
-    image: mariadb:latest
+    image: mariadb:11.1.2-jammy
     container_name: mariadb
     env_file:
       - .env
